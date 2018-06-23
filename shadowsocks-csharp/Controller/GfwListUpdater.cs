@@ -12,11 +12,13 @@ namespace Shadowsocks.Controller
 {
     public class GFWListUpdater
     {
-        private const string GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
-        private const string GFWLIST_BACKUP_URL = "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/gfwlist.txt";
 
-        private const string GFWLIST_TEMPLATE_URL = "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/ss_gfw.pac";
+        private readonly string GFWLIST_URL = System.Configuration.ConfigurationSettings.AppSettings["GfwListUrl"].ToString();// "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
+
+        private  string GFWLIST_BACKUP_URL = "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/gfwlist.txt";
+
+        private readonly string GFWLIST_TEMPLATE_URL = System.Configuration.ConfigurationSettings.AppSettings["GfwListPacUrl"].ToString();// "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/ss_gfw.pac";
 
         private static string PAC_FILE = PACServer.PAC_FILE;
 
@@ -49,7 +51,7 @@ namespace Shadowsocks.Controller
             try
             {
                 string result = e.Result;
-                if (result.IndexOf("__RULES__") > 0 && result.IndexOf("FindProxyForURL") > 0)
+                if (/*result.IndexOf("__RULES__") > 0 &&*/ result.IndexOf("FindProxyForURL") > 0)
                 {
                     gfwlist_template = result;
                     if (lastConfig != null)
@@ -189,7 +191,9 @@ namespace Shadowsocks.Controller
                 }
                 http.Proxy = proxy;
                 http.DownloadStringCompleted += http_DownloadGFWTemplateCompleted;
-                http.DownloadStringAsync(new Uri(GFWLIST_TEMPLATE_URL + "?rnd=" + Util.Utils.RandUInt32().ToString()));
+
+                var url = GFWLIST_TEMPLATE_URL + "?rnd=" + Util.Utils.RandUInt32().ToString();
+                http.DownloadStringAsync(new Uri(url));
             }
             else
             {
