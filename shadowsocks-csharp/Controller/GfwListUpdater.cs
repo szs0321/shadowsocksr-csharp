@@ -16,7 +16,7 @@ namespace Shadowsocks.Controller
 
         private readonly string GFWLIST_URL = System.Configuration.ConfigurationSettings.AppSettings["GfwListUrl"].ToString();// "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
-        private  string GFWLIST_BACKUP_URL = "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/gfwlist.txt";
+        private readonly string GFWLIST_BACKUP_URL = System.Configuration.ConfigurationSettings.AppSettings["GfwListUrlBak"].ToString();
 
         private readonly string GFWLIST_TEMPLATE_URL = System.Configuration.ConfigurationSettings.AppSettings["GfwListPacUrl"].ToString();// "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/ss_gfw.pac";
 
